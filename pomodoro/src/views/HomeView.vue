@@ -30,7 +30,8 @@ export default class HomeView extends Vue {}
   max-width: 40rem;
   color: white;
 }
-.btn-outline-secondary {
+.btn-outline-secondary,
+.btn-outline-secondary:hover {
   color: var(--rich-black-fogra-29);
   border-color: var(--ghost-white);
   background-color: var(--ghost-white);

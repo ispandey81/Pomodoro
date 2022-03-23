@@ -8,7 +8,7 @@
             >:<span id="second">{{ secondHTMLValue }}</span>
           </b-card-text>
           <b-button
-            v-on:click="startClicked"
+            v-on:click="startClicked(intervalId)"
             v-if="!timerStarted"
             pill
             href="#"
@@ -55,17 +55,19 @@ export default class HomeView extends Vue {
   private timerStarted = false;
   private minuteForTimeCalculation = 25;
   private secondForTimeCalculation = 60;
-  private intervalId!: number;
+  private intervalId = NaN;
   private minuteHTMLValue = "25";
   private secondHTMLValue = "00";
 
-  startClicked() {
+  startClicked(intervalId: number) {
     this.stopClicked();
     this.timerStarted = true;
-    this.minuteHTMLValue = "24";
-    this.minuteForTimeCalculation = 24;
-    this.secondHTMLValue = "59";
-    this.secondForTimeCalculation = 59;
+    if (!intervalId) {
+      this.minuteForTimeCalculation = this.minuteForTimeCalculation - 1;
+      this.minuteHTMLValue = this.minuteForTimeCalculation.toString();
+      this.secondForTimeCalculation = this.secondForTimeCalculation - 1;
+      this.secondHTMLValue = this.secondForTimeCalculation.toString();
+    }
     this.intervalId = setInterval(() => this.timer(), 1000); // repeat every second
   }
 
@@ -76,6 +78,7 @@ export default class HomeView extends Vue {
     this.minuteHTMLValue = "25";
     this.secondHTMLValue = "00";
     this.stopClicked();
+    this.intervalId = NaN;
   }
 
   stopClicked() {
@@ -90,12 +93,18 @@ export default class HomeView extends Vue {
     ) {
       this.secondForTimeCalculation--;
     }
-    if (this.secondForTimeCalculation == 0) {
+    if (
+      this.secondForTimeCalculation == 0 &&
+      this.minuteForTimeCalculation !== 0
+    ) {
       this.secondForTimeCalculation = 60;
       this.minuteForTimeCalculation--;
     }
-    if (this.minuteForTimeCalculation == 0) {
-      clearInterval(this.intervalId);
+    if (
+      this.minuteForTimeCalculation == 0 &&
+      this.secondForTimeCalculation == 0
+    ) {
+      this.resetClicked();
     }
     this.minuteHTMLValue = this.returnData(this.minuteForTimeCalculation);
     this.secondHTMLValue = this.returnData(this.secondForTimeCalculation);

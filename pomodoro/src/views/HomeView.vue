@@ -2,13 +2,35 @@
   <div class="home">
     <b-container>
       <b-row align-h="center">
-        <b-card tag="article" class="mb-2">
+        <b-card tag="article" class="mb-2" :class="backgroundColor">
+          <div>
+            <b-button-group>
+              <button
+                @click="onBtnClick('Pomodoro')"
+                :class="{ activeBtn: typeOfBtnClicked === 'Pomodoro' }"
+              >
+                Pomodoro
+              </button>
+              <button
+                @click="onBtnClick('Short Break')"
+                :class="{ activeBtn: typeOfBtnClicked === 'Short Break' }"
+              >
+                Short Break
+              </button>
+              <button
+                @click="onBtnClick('Long Break')"
+                :class="{ activeBtn: typeOfBtnClicked === 'Long Break' }"
+              >
+                Long Break
+              </button>
+            </b-button-group>
+          </div>
           <b-card-text>
             <span id="minuteForTimeCalculation">{{ minuteHTMLValue }}</span
             >:<span id="second">{{ secondHTMLValue }}</span>
           </b-card-text>
           <b-button
-            v-on:click="startClicked(intervalId)"
+            @click="startClicked(intervalId)"
             v-if="!timerStarted"
             pill
             href="#"
@@ -19,7 +41,7 @@
           <b-button
             class="ml-2"
             v-if="timerStarted"
-            v-on:click="stopClicked"
+            @click="stopClicked"
             pill
             href="#"
             variant="outline-secondary"
@@ -29,7 +51,7 @@
           <b-button
             class="ml-2"
             v-if="timerStarted"
-            v-on:click="resetClicked"
+            @click="resetClicked"
             pill
             href="#"
             variant="outline-secondary"
@@ -52,31 +74,34 @@ import HelloWorld from "@/components/HelloWorld.vue"; // @ is an alias to /src
   },
 })
 export default class HomeView extends Vue {
+  private static readonly PLACEHOLDER_TEXT = "Pomodoro";
   private timerStarted = false;
   private minuteForTimeCalculation = 25;
   private secondForTimeCalculation = 60;
   private intervalId = NaN;
   private minuteHTMLValue = "25";
   private secondHTMLValue = "00";
+  private typeOfBtnClicked = HomeView.PLACEHOLDER_TEXT;
+  private backgroundColor = {
+    pomodoro: true,
+    shortBreak: false,
+    longBreak: false,
+  };
 
   startClicked(intervalId: number) {
     this.stopClicked();
     this.timerStarted = true;
     if (!intervalId) {
       this.minuteForTimeCalculation = this.minuteForTimeCalculation - 1;
-      this.minuteHTMLValue = this.minuteForTimeCalculation.toString();
+      this.minuteHTMLValue = this.returnData(this.minuteForTimeCalculation);
       this.secondForTimeCalculation = this.secondForTimeCalculation - 1;
-      this.secondHTMLValue = this.secondForTimeCalculation.toString();
+      this.secondHTMLValue = this.returnData(this.secondForTimeCalculation);
     }
     this.intervalId = setInterval(() => this.timer(), 1000); // repeat every second
   }
 
   resetClicked() {
-    this.timerStarted = false;
-    this.minuteForTimeCalculation = 25;
-    this.secondForTimeCalculation = 60;
-    this.minuteHTMLValue = "25";
-    this.secondHTMLValue = "00";
+    this.onBtnClick(this.typeOfBtnClicked);
     this.stopClicked();
     this.intervalId = NaN;
   }
@@ -84,6 +109,41 @@ export default class HomeView extends Vue {
   stopClicked() {
     clearInterval(this.intervalId);
     this.timerStarted = false;
+  }
+
+  onBtnClick(typeOfBtnClicked: string) {
+    window.document.title = HomeView.PLACEHOLDER_TEXT;
+    this.timerStarted = false;
+    this.stopClicked();
+    this.intervalId = NaN;
+    this.typeOfBtnClicked = typeOfBtnClicked;
+    this.secondForTimeCalculation = 60;
+    this.secondHTMLValue = "00";
+    if (typeOfBtnClicked === HomeView.PLACEHOLDER_TEXT) {
+      this.minuteForTimeCalculation = 25;
+      this.minuteHTMLValue = "25";
+      this.backgroundColor = {
+        pomodoro: true,
+        shortBreak: false,
+        longBreak: false,
+      };
+    } else if (typeOfBtnClicked === "Short Break") {
+      this.minuteForTimeCalculation = 5;
+      this.minuteHTMLValue = "05";
+      this.backgroundColor = {
+        pomodoro: false,
+        shortBreak: true,
+        longBreak: false,
+      };
+    } else if (typeOfBtnClicked === "Long Break") {
+      this.minuteForTimeCalculation = 15;
+      this.minuteHTMLValue = "15";
+      this.backgroundColor = {
+        pomodoro: false,
+        shortBreak: false,
+        longBreak: true,
+      };
+    }
   }
 
   timer() {
@@ -104,10 +164,16 @@ export default class HomeView extends Vue {
       this.minuteForTimeCalculation == 0 &&
       this.secondForTimeCalculation == 0
     ) {
+      if (this.typeOfBtnClicked === HomeView.PLACEHOLDER_TEXT) {
+        this.typeOfBtnClicked = "Short Break";
+      } else {
+        this.typeOfBtnClicked = HomeView.PLACEHOLDER_TEXT;
+      }
       this.resetClicked();
     }
     this.minuteHTMLValue = this.returnData(this.minuteForTimeCalculation);
     this.secondHTMLValue = this.returnData(this.secondForTimeCalculation);
+    window.document.title = `${this.minuteHTMLValue}:${this.secondHTMLValue}`;
   }
 
   returnData(input: number) {
@@ -121,7 +187,7 @@ export default class HomeView extends Vue {
 </script>
 <style scoped>
 .card {
-  background-color: var(--blue-sapphire);
+  background-color: var(--international-orange-engineering);
   max-width: 40rem;
   color: white;
 }
@@ -135,5 +201,19 @@ export default class HomeView extends Vue {
 .card-text {
   font-size: 10rem;
   font-weight: bold;
+}
+.activeBtn {
+  background-color: var(--rich-black-fogra-29);
+  color: white;
+  border-radius: 0.5rem;
+}
+.pomodoro {
+  background-color: var(--international-orange-engineering);
+}
+.shortBreak {
+  background-color: var(--blue-sapphire);
+}
+.longBreak {
+  background-color: forestgreen;
 }
 </style>

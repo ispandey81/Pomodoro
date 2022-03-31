@@ -16,7 +16,6 @@
   --cyan-process: #01baefff;
   --ghost-white: #fbfbffff;
   --rich-black-fogra-29: #040f16ff;
-  background-color: var(--ghost-white);
 }
 
 #app {
@@ -25,6 +24,7 @@
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
   color: #2c3e50;
+  background-color: var(--ghost-white);
   height: 100vh;
 }
 

@@ -155,17 +155,17 @@ export default class HomeView extends Vue {
 
   timer() {
     if (
-      this.secondForTimeCalculation == 60 ||
-      this.secondForTimeCalculation > 0
-    ) {
-      this.secondForTimeCalculation--;
-    }
-    if (
       this.secondForTimeCalculation == 0 &&
       this.minuteForTimeCalculation !== 0
     ) {
       this.secondForTimeCalculation = 60;
       this.minuteForTimeCalculation--;
+    }
+    if (
+      this.secondForTimeCalculation == 60 ||
+      this.secondForTimeCalculation > 0
+    ) {
+      this.secondForTimeCalculation--;
     }
     if (
       this.minuteForTimeCalculation == 0 &&

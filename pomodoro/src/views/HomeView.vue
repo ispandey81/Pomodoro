@@ -1,6 +1,7 @@
 <template>
   <div class="home">
     <b-container>
+      <audio src="../assets/notification.wav"></audio>
       <b-row align-h="center">
         <b-card tag="article" class="mb-2" :class="backgroundColor">
           <div>
@@ -98,6 +99,12 @@ export default class HomeView extends Vue {
       this.secondHTMLValue = this.returnData(this.secondForTimeCalculation);
     }
     this.intervalId = setInterval(() => this.timer(), 1000); // repeat every second
+    this.playAudio();
+  }
+
+  playAudio() {
+    const audioElement = document.querySelector("audio")!;
+    audioElement.play();
   }
 
   resetClicked() {
@@ -170,6 +177,7 @@ export default class HomeView extends Vue {
         this.typeOfBtnClicked = HomeView.PLACEHOLDER_TEXT;
       }
       this.resetClicked();
+      this.playAudio();
     }
     this.minuteHTMLValue = this.returnData(this.minuteForTimeCalculation);
     this.secondHTMLValue = this.returnData(this.secondForTimeCalculation);

@@ -8,6 +8,6 @@ describe("App.vue", () => {
   });
 
   it("checks if a div with an id attribute of app exists", () => {
-    expect(wrapper.attributes()['id']).toBe('app');
-  })
+    expect(wrapper.attributes()["id"]).toBe("app");
+  });
 });

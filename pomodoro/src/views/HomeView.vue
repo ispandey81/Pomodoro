@@ -188,6 +188,10 @@ export default class HomeView extends Vue {
       ? "00"
       : `0${input}`;
   }
+
+  destroyed() {
+    this.resetClicked(); // reset the timers if any
+  }
 }
 </script>
 <style scoped>

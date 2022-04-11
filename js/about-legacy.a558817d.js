@@ -1,0 +1,2 @@
+"use strict";(self["webpackChunkpomodoro"]=self["webpackChunkpomodoro"]||[]).push([[443],{352:function(t,e,n){n.r(e),n.d(e,{default:function(){return l}});var o=function(){var t=this,e=t.$createElement;t._self._c;return t._m(0)},r=[function(){var t=this,e=t.$createElement,n=t._self._c||e;return n("div",{staticClass:"about"},[n("h1",[t._v("This is an implementation of pomodoro timer in vue with typescript")])])}],i=n(1),u={},s=(0,i.Z)(u,o,r,!1,null,null,null),l=s.exports}}]);
+//# sourceMappingURL=about-legacy.a558817d.js.map
